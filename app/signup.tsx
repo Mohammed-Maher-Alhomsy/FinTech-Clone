@@ -52,7 +52,7 @@ const Page = () => {
 
         <Link href={"/login"} asChild replace>
           <TouchableOpacity>
-            <Text style={defaultStyles.textLink}>
+            <Text style={[defaultStyles.textLink, { marginBottom: 10 }]}>
               Already have an account? Log in
             </Text>
           </TouchableOpacity>
@@ -65,7 +65,7 @@ const Page = () => {
           disabled={phoneNumber === ""}
           style={[
             defaultStyles.pillButton,
-            { marginBottom: 23 },
+            { marginBottom: 35 },
             phoneNumber !== "" ? styles.enabled : styles.disable,
           ]}
         >
