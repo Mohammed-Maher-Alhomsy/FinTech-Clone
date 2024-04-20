@@ -88,5 +88,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 20,
     marginBottom: 60,
+    paddingHorizontal: 8,
   },
 });
