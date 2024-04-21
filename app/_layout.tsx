@@ -3,13 +3,29 @@ import { TouchableOpacity } from "react-native";
 
 import { useFonts } from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
+import * as SecureStore from "expo-secure-store";
 import { Link, Stack, router } from "expo-router";
+import { ClerkProvider } from "@clerk/clerk-expo";
 import * as SplashScreen from "expo-splash-screen";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 import Colors from "@/constants/Colors";
 
 SplashScreen.preventAutoHideAsync();
+
+const tokenCache = {
+  async getToken(key: string) {
+    try {
+      return SecureStore.getItemAsync(key);
+    } catch (error) {
+      return null;
+    }
+  },
+
+  async saveToken(key: string, value: string) {
+    return SecureStore.setItemAsync(key, value);
+  },
+};
 
 const InitialLayout = () => {
   const [loaded, error] = useFonts({
@@ -99,7 +115,14 @@ const InitialLayout = () => {
 };
 
 function RootLayoutNav() {
-  return <InitialLayout />;
+  return (
+    <ClerkProvider
+      tokenCache={tokenCache}
+      publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!}
+    >
+      <InitialLayout />
+    </ClerkProvider>
+  );
 }
 
 export default RootLayoutNav;

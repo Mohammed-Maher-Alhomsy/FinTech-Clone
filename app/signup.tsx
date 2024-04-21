@@ -11,13 +11,29 @@ import {
 import Colors from "@/constants/Colors";
 import { defaultStyles } from "@/constants/Styles";
 
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
+import { useSignUp } from "@clerk/clerk-expo";
 
 const Page = () => {
+  const { signUp, isLoaded } = useSignUp();
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [countryCode, setCountryCode] = useState("+963");
+  const [countryCode, setCountryCode] = useState("+1");
 
-  const onSignup = async () => {};
+  const onSignup = async () => {
+    const fullPhoneNumber = `${countryCode}${phoneNumber}`;
+    try {
+      await signUp?.create({
+        phoneNumber: fullPhoneNumber,
+      });
+
+      router.push({
+        pathname: "/verify/[phone]",
+        params: { phone: fullPhoneNumber },
+      });
+    } catch (error: any) {
+      console.log("Signup Error", error);
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -62,7 +78,7 @@ const Page = () => {
 
         <TouchableOpacity
           onPress={onSignup}
-          disabled={phoneNumber === ""}
+          disabled={phoneNumber === "" || !isLoaded}
           style={[
             defaultStyles.pillButton,
             { marginBottom: 35 },
