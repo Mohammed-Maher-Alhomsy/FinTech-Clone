@@ -5,9 +5,9 @@ import { useFonts } from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import * as SecureStore from "expo-secure-store";
 import { Link, Stack, router } from "expo-router";
-import { ClerkProvider } from "@clerk/clerk-expo";
 import * as SplashScreen from "expo-splash-screen";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
 
 import Colors from "@/constants/Colors";
 
@@ -27,11 +27,15 @@ const tokenCache = {
   },
 };
 
+const clerkPublishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
 const InitialLayout = () => {
   const [loaded, error] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     ...FontAwesome.font,
   });
+
+  const { isLoaded, isSignedIn } = useAuth();
 
   useEffect(() => {
     if (error) throw error;
@@ -42,6 +46,10 @@ const InitialLayout = () => {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
+
+  useEffect(() => {
+    console.log("isSignedIn", isSignedIn);
+  }, [isSignedIn]);
 
   if (!loaded) {
     return null;
@@ -110,6 +118,22 @@ const InitialLayout = () => {
           statusBarStyle: "dark",
         }}
       />
+
+      <Stack.Screen
+        name="verify/[phone]"
+        options={{
+          statusBarStyle: "dark",
+          navigationBarColor: "black",
+          title: "",
+          headerShadowVisible: false,
+          headerStyle: { backgroundColor: Colors.background },
+          headerLeft: () => (
+            <TouchableOpacity onPress={router.back}>
+              <Ionicons name="arrow-back" size={36} color={Colors.dark} />
+            </TouchableOpacity>
+          ),
+        }}
+      />
     </Stack>
   );
 };
@@ -118,7 +142,7 @@ function RootLayoutNav() {
   return (
     <ClerkProvider
       tokenCache={tokenCache}
-      publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!}
+      publishableKey={clerkPublishableKey!}
     >
       <InitialLayout />
     </ClerkProvider>
