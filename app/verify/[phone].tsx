@@ -2,11 +2,11 @@ import { Fragment, useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 
 import { Link, useLocalSearchParams } from "expo-router";
-import {
-  useSignIn,
-  useSignUp,
-  isClerkAPIResponseError,
-} from "@clerk/clerk-expo";
+// import {
+//   useSignIn,
+//   useSignUp,
+//   isClerkAPIResponseError,
+// } from "@clerk/clerk-expo";
 import {
   Cursor,
   CodeField,
@@ -18,9 +18,9 @@ import Colors from "@/constants/Colors";
 import { defaultStyles } from "@/constants/Styles";
 
 const Page = () => {
-  const { signIn } = useSignIn();
+  // const { signIn } = useSignIn();
   const [code, setCode] = useState("");
-  const { signUp, setActive } = useSignUp();
+  // const { signUp, setActive } = useSignUp();
 
   const ref = useBlurOnFulfill({ value: code, cellCount: 6 });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -44,31 +44,27 @@ const Page = () => {
   }, [code]);
 
   const verifyCode = async () => {
-    try {
-      await signUp!.attemptPhoneNumberVerification({ code });
-
-      await setActive!({ session: signUp!.createdSessionId });
-    } catch (err) {
-      console.log("Verify Error", JSON.stringify(err, null, 2));
-
-      if (isClerkAPIResponseError(err)) {
-        Alert.alert("Error", err.errors[0].message);
-      }
-    }
+    // try {
+    //   await signUp!.attemptPhoneNumberVerification({ code });
+    //   await setActive!({ session: signUp!.createdSessionId });
+    // } catch (err) {
+    //   console.log("Verify Error", JSON.stringify(err, null, 2));
+    //   if (isClerkAPIResponseError(err)) {
+    //     Alert.alert("Error", err.errors[0].message);
+    //   }
+    // }
   };
 
   const verifySignIn = async () => {
-    try {
-      await signIn!.attemptFirstFactor({ strategy: "phone_code", code });
-
-      await setActive!({ session: signIn!.createdSessionId });
-    } catch (err) {
-      console.log("Verify Error", JSON.stringify(err, null, 2));
-
-      if (isClerkAPIResponseError(err)) {
-        Alert.alert("Error", err.errors[0].message);
-      }
-    }
+    // try {
+    //   await signIn!.attemptFirstFactor({ strategy: "phone_code", code });
+    //   await setActive!({ session: signIn!.createdSessionId });
+    // } catch (err) {
+    //   console.log("Verify Error", JSON.stringify(err, null, 2));
+    //   if (isClerkAPIResponseError(err)) {
+    //     Alert.alert("Error", err.errors[0].message);
+    //   }
+    // }
   };
 
   return (

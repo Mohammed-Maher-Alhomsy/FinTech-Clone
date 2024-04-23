@@ -6,7 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import * as SecureStore from "expo-secure-store";
 import * as SplashScreen from "expo-splash-screen";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
+// import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import { Link, Stack, router, useSegments } from "expo-router";
 
 import Colors from "@/constants/Colors";
@@ -36,7 +36,7 @@ const InitialLayout = () => {
   });
 
   const segments = useSegments();
-  const { isLoaded, isSignedIn } = useAuth();
+  // const { isLoaded, isSignedIn } = useAuth();
 
   useEffect(() => {
     if (error) throw error;
@@ -48,19 +48,22 @@ const InitialLayout = () => {
     }
   }, [loaded]);
 
-  useEffect(() => {
-    if (!isLoaded) return;
+  // useEffect(() => {
+  //   // if (!isLoaded) return;
 
-    const inAuthGroup = segments[0] === "(authenticated)";
+  //   const inAuthGroup = segments[0] === "(authenticated)";
 
-    if (isSignedIn && !inAuthGroup) {
-      router.replace("/(authenticated)/(tabs)/home");
-    } else if (!isSignedIn) {
-      router.replace("/");
-    }
-  }, [isSignedIn]);
+  //   if (isSignedIn && !inAuthGroup) {
+  //     router.replace("/(authenticated)/(tabs)/home");
+  //   } else if (!isSignedIn) {
+  //     router.replace("/");
+  //   }
+  // }, [isSignedIn]);
 
-  if (!loaded || !isLoaded) {
+  if (
+    !loaded
+    // || !isLoaded
+  ) {
     return <Text>Loading...</Text>;
   }
 
@@ -154,12 +157,12 @@ const InitialLayout = () => {
 
 function RootLayoutNav() {
   return (
-    <ClerkProvider
-      tokenCache={tokenCache}
-      publishableKey={clerkPublishableKey!}
-    >
-      <InitialLayout />
-    </ClerkProvider>
+    // <ClerkProvider
+    //   tokenCache={tokenCache}
+    //   publishableKey={clerkPublishableKey!}
+    // >
+    <InitialLayout />
+    // </ClerkProvider>
   );
 }
 

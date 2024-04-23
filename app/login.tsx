@@ -14,7 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import Colors from "@/constants/Colors";
 import { defaultStyles } from "@/constants/Styles";
-import { isClerkAPIResponseError, useSignIn } from "@clerk/clerk-expo";
+// import { isClerkAPIResponseError, useSignIn } from "@clerk/clerk-expo";
 import { router } from "expo-router";
 
 enum SignInType {
@@ -25,7 +25,7 @@ enum SignInType {
 }
 
 const Page = () => {
-  const { signIn } = useSignIn();
+  // const { signIn } = useSignIn();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [countryCode, setCountryCode] = useState("+1");
 
@@ -33,37 +33,37 @@ const Page = () => {
     if (type === SignInType.Phone) {
       const fullPhoneNumber = `${countryCode}${phoneNumber}`;
 
-      try {
-        const { supportedFirstFactors } = await signIn!.create({
-          identifier: fullPhoneNumber,
-        });
+      // try {
+      //   const { supportedFirstFactors } = await signIn!.create({
+      //     identifier: fullPhoneNumber,
+      //   });
 
-        const firstPhoneFactor: any = supportedFirstFactors.find(
-          (factor: any) => {
-            return factor.strategy === "phone_code";
-          }
-        );
+      //   const firstPhoneFactor: any = supportedFirstFactors.find(
+      //     (factor: any) => {
+      //       return factor.strategy === "phone_code";
+      //     }
+      //   );
 
-        const { phoneNumberId } = firstPhoneFactor;
+      //   const { phoneNumberId } = firstPhoneFactor;
 
-        await signIn!.prepareFirstFactor({
-          strategy: "phone_code",
-          phoneNumberId,
-        });
+      //   await signIn!.prepareFirstFactor({
+      //     strategy: "phone_code",
+      //     phoneNumberId,
+      //   });
 
-        router.push({
-          pathname: "/verify/[phone]",
-          params: { phone: fullPhoneNumber, signin: "true" },
-        });
-      } catch (err) {
-        console.log("Sign in Error", JSON.stringify(err, null, 2));
+      //   router.push({
+      //     pathname: "/verify/[phone]",
+      //     params: { phone: fullPhoneNumber, signin: "true" },
+      //   });
+      // } catch (err) {
+      //   console.log("Sign in Error", JSON.stringify(err, null, 2));
 
-        if (isClerkAPIResponseError(err)) {
-          if (err.errors[0].code === "form_identifier_not_found") {
-            Alert.alert("Error", err.errors[0].message);
-          }
-        }
-      }
+      //   if (isClerkAPIResponseError(err)) {
+      //     if (err.errors[0].code === "form_identifier_not_found") {
+      //       Alert.alert("Error", err.errors[0].message);
+      //     }
+      //   }
+      // }
     }
   };
 
