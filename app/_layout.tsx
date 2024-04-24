@@ -10,6 +10,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Stack, router, useSegments } from "expo-router";
 
 import Colors from "@/constants/Colors";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -161,7 +162,9 @@ function RootLayoutNav() {
     //   tokenCache={tokenCache}
     //   publishableKey={clerkPublishableKey!}
     // >
-    <InitialLayout />
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <InitialLayout />
+    </GestureHandlerRootView>
     // </ClerkProvider>
   );
 }

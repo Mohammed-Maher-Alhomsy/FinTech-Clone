@@ -6,7 +6,8 @@ import Colors from "@/constants/Colors";
 import Dropdown from "@/components/Dropdown";
 import RoundeBtn from "@/components/RoundBtn";
 import { defaultStyles } from "@/constants/Styles";
-import { useBalanceStore } from "@/store/balenceStore";
+import { useBalanceStore } from "@/store/balanceStore";
+import WidgetList from "@/components/SortableList/WidgetList";
 
 const Page = () => {
   const { balance, clearTransactions, runTransaction, transactions } =
@@ -46,31 +47,35 @@ const Page = () => {
           </Text>
         )}
 
-        {transactions.map(({ id, amount, date, title }) => (
-          <View
-            key={id}
-            style={{ flexDirection: "row", alignItems: "center", gap: 16 }}
-          >
-            <View style={styles.circle}>
-              <Ionicons
-                name={amount > 0 ? "add" : "remove"}
-                size={24}
-                color={Colors.dark}
-              />
+        {transactions.length > 0 &&
+          transactions.map(({ id, amount, date, title }) => (
+            <View
+              key={id}
+              style={{ flexDirection: "row", alignItems: "center", gap: 16 }}
+            >
+              <View style={styles.circle}>
+                <Ionicons
+                  name={amount > 0 ? "add" : "remove"}
+                  size={24}
+                  color={Colors.dark}
+                />
+              </View>
+
+              <View style={{ flex: 1 }}>
+                <Text style={{ fontWeight: "400" }}>{title}</Text>
+
+                <Text style={{ color: Colors.gray, fontSize: 12 }}>
+                  {date.toLocaleDateString()}
+                </Text>
+              </View>
+
+              <Text>{amount}€</Text>
             </View>
-
-            <View style={{ flex: 1 }}>
-              <Text style={{ fontWeight: "400" }}>{title}</Text>
-
-              <Text style={{ color: Colors.gray, fontSize: 12 }}>
-                {date.toLocaleDateString()}
-              </Text>
-            </View>
-
-            <Text>{amount}€</Text>
-          </View>
-        ))}
+          ))}
       </View>
+
+      <Text style={defaultStyles.sectionHeader}>Widgets</Text>
+      <WidgetList />
     </ScrollView>
   );
 };
