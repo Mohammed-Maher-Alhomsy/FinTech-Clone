@@ -1,28 +1,75 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
+import { Ionicons } from "@expo/vector-icons";
+
 import Colors from "@/constants/Colors";
-import RoundeBtn from "@/components/RoundBtn";
 import Dropdown from "@/components/Dropdown";
+import RoundeBtn from "@/components/RoundBtn";
+import { defaultStyles } from "@/constants/Styles";
+import { useBalanceStore } from "@/store/balenceStore";
 
 const Page = () => {
-  const balance = 1420;
+  const { balance, clearTransactions, runTransaction, transactions } =
+    useBalanceStore();
 
-  const onAddMoney = () => {};
+  const onAddMoney = () => {
+    runTransaction({
+      title: "Added money",
+      date: new Date(),
+      id: Math.random().toString(),
+      amount: Math.floor(Math.random() * 1000) * (Math.random() > 0.5 ? 1 : -1),
+    });
+  };
 
   return (
     <ScrollView style={{ backgroundColor: Colors.background }}>
       <View style={styles.account}>
         <View style={styles.row}>
-          <Text style={styles.balance}>{balance}</Text>
+          <Text style={styles.balance}>{balance()}</Text>
           <Text style={styles.currency}>€</Text>
         </View>
       </View>
 
       <View style={styles.actionRow}>
         <RoundeBtn icon="add" onPress={onAddMoney} text="Add Money" />
-        <RoundeBtn icon="refresh" text="Exchange" />
+        <RoundeBtn icon="refresh" text="Exchange" onPress={clearTransactions} />
         <RoundeBtn icon="list" text="Details" />
         <Dropdown />
+      </View>
+
+      <Text style={defaultStyles.sectionHeader}>Transactions</Text>
+
+      <View style={styles.transactions}>
+        {transactions.length === 0 && (
+          <Text style={{ padding: 14, color: Colors.gray }}>
+            No transactions yet.
+          </Text>
+        )}
+
+        {transactions.map(({ id, amount, date, title }) => (
+          <View
+            key={id}
+            style={{ flexDirection: "row", alignItems: "center", gap: 16 }}
+          >
+            <View style={styles.circle}>
+              <Ionicons
+                name={amount > 0 ? "add" : "remove"}
+                size={24}
+                color={Colors.dark}
+              />
+            </View>
+
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontWeight: "400" }}>{title}</Text>
+
+              <Text style={{ color: Colors.gray, fontSize: 12 }}>
+                {date.toLocaleDateString()}
+              </Text>
+            </View>
+
+            <Text>{amount}€</Text>
+          </View>
+        ))}
       </View>
     </ScrollView>
   );
@@ -57,5 +104,22 @@ const styles = StyleSheet.create({
     padding: 20,
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+
+  transactions: {
+    marginHorizontal: 20,
+    padding: 14,
+    backgroundColor: "#fff",
+    borderRadius: 16,
+    gap: 20,
+  },
+
+  circle: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Colors.lightGray,
   },
 });

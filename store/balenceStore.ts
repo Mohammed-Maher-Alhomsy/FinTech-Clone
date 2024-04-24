@@ -22,7 +22,8 @@ export const useBalanceStore = create<BalanceState>()(
     (set, get) => ({
       transactions: [],
 
-      balance: () => 0,
+      balance: () =>
+        get().transactions.reduce((a, { amount }) => amount + a, 0),
 
       clearTransactions: () => {
         set({ transactions: [] });
