@@ -1,11 +1,31 @@
-import Colors from "@/constants/Colors";
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import { View, Text } from "react-native";
+import { BlurView } from "expo-blur";
+import { FontAwesome } from "@expo/vector-icons";
+
+import Colors from "@/constants/Colors";
 
 const Layout = () => {
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: Colors.primary }}>
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: Colors.primary,
+        tabBarBackground: () => (
+          <BlurView
+            intensity={100}
+            experimentalBlurMethod="dimezisBlurView"
+            style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.05)" }}
+          />
+        ),
+
+        tabBarStyle: {
+          position: "absolute",
+          backgroundColor: "transparent",
+          left: 0,
+          right: 0,
+          bottom: 0,
+        },
+      }}
+    >
       <Tabs.Screen
         name="home"
         options={{
