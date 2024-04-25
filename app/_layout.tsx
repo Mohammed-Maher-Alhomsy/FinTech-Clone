@@ -150,7 +150,7 @@ const InitialLayout = () => {
 
       <Stack.Screen
         name="(authenticated)/(tabs)"
-        options={{ headerShown: false }}
+        options={{ headerShown: false, statusBarStyle: "dark" }}
       />
     </Stack>
   );

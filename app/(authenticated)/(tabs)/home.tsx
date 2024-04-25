@@ -1,6 +1,7 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
+import { useHeaderHeight } from "@react-navigation/elements";
 
 import Colors from "@/constants/Colors";
 import Dropdown from "@/components/Dropdown";
@@ -10,6 +11,8 @@ import { useBalanceStore } from "@/store/balanceStore";
 import WidgetList from "@/components/SortableList/WidgetList";
 
 const Page = () => {
+  const headerHeight = useHeaderHeight();
+
   const { balance, clearTransactions, runTransaction, transactions } =
     useBalanceStore();
 
@@ -23,7 +26,10 @@ const Page = () => {
   };
 
   return (
-    <ScrollView style={{ backgroundColor: Colors.background }}>
+    <ScrollView
+      style={{ backgroundColor: Colors.background }}
+      contentContainerStyle={{ paddingTop: headerHeight }}
+    >
       <View style={styles.account}>
         <View style={styles.row}>
           <Text style={styles.balance}>{balance()}</Text>

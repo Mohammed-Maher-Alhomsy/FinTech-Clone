@@ -3,6 +3,7 @@ import { BlurView } from "expo-blur";
 import { FontAwesome } from "@expo/vector-icons";
 
 import Colors from "@/constants/Colors";
+import CustomHeader from "@/components/CustomHeader";
 
 const Layout = () => {
   return (
@@ -12,6 +13,7 @@ const Layout = () => {
         tabBarBackground: () => (
           <BlurView
             intensity={100}
+            // tint="extraLight"
             experimentalBlurMethod="dimezisBlurView"
             style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.05)" }}
           />
@@ -33,6 +35,8 @@ const Layout = () => {
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="registered" size={size} color={color} />
           ),
+          header: () => <CustomHeader />,
+          headerTransparent: true,
         }}
       />
 
