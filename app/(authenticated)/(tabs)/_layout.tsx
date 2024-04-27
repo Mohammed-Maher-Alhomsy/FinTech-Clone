@@ -67,6 +67,8 @@ const Layout = () => {
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="bitcoin" size={size} color={color} />
           ),
+          header: () => <CustomHeader />,
+          headerTransparent: true,
         }}
       />
 
