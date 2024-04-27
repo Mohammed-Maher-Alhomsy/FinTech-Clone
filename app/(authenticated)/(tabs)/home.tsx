@@ -71,7 +71,7 @@ const Page = () => {
                 <Text style={{ fontWeight: "400" }}>{title}</Text>
 
                 <Text style={{ color: Colors.gray, fontSize: 12 }}>
-                  {date.toLocaleDateString()}
+                  {date.toLocaleString()}
                 </Text>
               </View>
 
