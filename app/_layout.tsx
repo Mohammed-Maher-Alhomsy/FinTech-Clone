@@ -6,11 +6,13 @@ import { Ionicons } from "@expo/vector-icons";
 import * as SecureStore from "expo-secure-store";
 import * as SplashScreen from "expo-splash-screen";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-// import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import { Link, Stack, router, useSegments } from "expo-router";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 import Colors from "@/constants/Colors";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -162,9 +164,12 @@ function RootLayoutNav() {
     //   tokenCache={tokenCache}
     //   publishableKey={clerkPublishableKey!}
     // >
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <InitialLayout />
-    </GestureHandlerRootView>
+    <QueryClientProvider client={queryClient}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <InitialLayout />
+      </GestureHandlerRootView>
+    </QueryClientProvider>
+
     // </ClerkProvider>
   );
 }
