@@ -37,8 +37,7 @@ const Page = () => {
       style={{ backgroundColor: Colors.background }}
       contentContainerStyle={{ paddingTop: headerHeight }}
     >
-      <Text style={defaultStyles.sectionHeader}>Latest Crypto</Text>
-
+      <Text style={defaultStyles.sectionHeader}>Latest Crypot</Text>
       <View style={defaultStyles.block}>
         {currencies?.map((c: Currency) => (
           <Link href={`/crypto/${c.id}`} key={c.id} asChild>
@@ -47,62 +46,40 @@ const Page = () => {
             >
               {data && (
                 <Image
-                  source={{ uri: data[c.id]?.logo }}
+                  source={{ uri: data[c.id].logo }}
                   style={{ width: 40, height: 40 }}
                 />
               )}
 
-              <View style={{ flex: 1, gap: 10 }}>
-                {currencies?.map((c: Currency) => (
-                  <Link href={`/crypto/${c.id}`} key={c.id} asChild>
-                    <TouchableOpacity style={{ flexDirection: "row" }}>
-                      {data && (
-                        <Image
-                          source={{ uri: data[c.id]?.logo }}
-                          style={{ width: 32, height: 32 }}
-                        />
-                      )}
+              <View style={{ flex: 1, gap: 6 }}>
+                <Text style={{ fontWeight: "600", color: Colors.dark }}>
+                  {c.name}
+                </Text>
+                <Text style={{ color: Colors.gray }}>{c.symbol}</Text>
+              </View>
 
-                      <View style={{ flex: 1, gap: 6 }}>
-                        <Text style={{ fontWeight: "600", color: Colors.dark }}>
-                          {c.name}
-                        </Text>
-                        <Text style={{ color: Colors.gray }}>{c.symbol}</Text>
-                      </View>
+              <View style={{ gap: 6, alignItems: "flex-end" }}>
+                <Text>{c.quote.EUR.price.toFixed(2)} €</Text>
+                <View style={{ flexDirection: "row", gap: 4 }}>
+                  <Ionicons
+                    name={
+                      c.quote.EUR.percent_change_1h > 0
+                        ? "caret-up"
+                        : "caret-down"
+                    }
+                    size={16}
+                    color={c.quote.EUR.percent_change_1h > 0 ? "green" : "red"}
+                  />
 
-                      <View style={{ gap: 6, alignItems: "flex-end" }}>
-                        <Text>{c.quote.EUR.price.toFixed(2)} €</Text>
-
-                        <View style={{ flexDirection: "row", gap: 4 }}>
-                          <Ionicons
-                            name={
-                              c.quote.EUR.percent_change_1h > 0
-                                ? "caret-up"
-                                : "caret-down"
-                            }
-                            size={16}
-                            color={
-                              c.quote.EUR.percent_change_1h > 0
-                                ? "green"
-                                : "red"
-                            }
-                          />
-
-                          <Text
-                            style={{
-                              color:
-                                c.quote.EUR.percent_change_1h > 0
-                                  ? "green"
-                                  : "red",
-                            }}
-                          >
-                            {c.quote.EUR.percent_change_1h.toFixed(2)} %
-                          </Text>
-                        </View>
-                      </View>
-                    </TouchableOpacity>
-                  </Link>
-                ))}
+                  <Text
+                    style={{
+                      color:
+                        c.quote.EUR.percent_change_1h > 0 ? "green" : "red",
+                    }}
+                  >
+                    {c.quote.EUR.percent_change_1h.toFixed(2)} %
+                  </Text>
+                </View>
               </View>
             </TouchableOpacity>
           </Link>

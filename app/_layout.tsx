@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 import { useFonts } from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
@@ -153,6 +153,39 @@ const InitialLayout = () => {
       <Stack.Screen
         name="(authenticated)/(tabs)"
         options={{ headerShown: false, statusBarStyle: "dark" }}
+      />
+
+      <Stack.Screen
+        name="(authenticated)/crypto/[id]"
+        options={{
+          title: "",
+          headerBackVisible: false,
+
+          headerLeft: ({}) => (
+            <TouchableOpacity onPress={router.back}>
+              <Ionicons name="arrow-back" size={34} color={Colors.dark} />
+            </TouchableOpacity>
+          ),
+
+          statusBarStyle: "dark",
+          // headerTransparent: true,
+
+          headerRight: () => (
+            <View style={{ flexDirection: "row", gap: 10 }}>
+              <TouchableOpacity>
+                <Ionicons
+                  name="notifications-outline"
+                  color={Colors.dark}
+                  size={30}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity>
+                <Ionicons name="star-outline" color={Colors.dark} size={30} />
+              </TouchableOpacity>
+            </View>
+          ),
+        }}
       />
     </Stack>
   );
