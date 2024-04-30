@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, TouchableOpacity, View } from "react-native";
 
 import { useFonts } from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
@@ -68,7 +68,11 @@ const InitialLayout = () => {
     !loaded
     // || !isLoaded
   ) {
-    return <Text>Loading...</Text>;
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
   }
 
   return (
@@ -191,7 +195,11 @@ const InitialLayout = () => {
 
       <Stack.Screen
         name="(authenticated)/(modals)/lock"
-        options={{ headerShown: false, animation: "none" }}
+        options={{
+          animation: "none",
+          headerShown: false,
+          statusBarStyle: "dark",
+        }}
       />
     </Stack>
   );
