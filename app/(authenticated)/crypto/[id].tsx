@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -9,20 +9,34 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+import { format } from "date-fns";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
+import { SharedValue } from "react-native-reanimated";
 import { Stack, useLocalSearchParams } from "expo-router";
+import { Circle, useFont } from "@shopify/react-native-skia";
 import { useHeaderHeight } from "@react-navigation/elements";
+import { CartesianChart, Line, useChartPressState } from "victory-native";
 
 import Colors from "@/constants/Colors";
 import { defaultStyles } from "@/constants/Styles";
 
 const categories = ["Overview", "News", "Orders", "Transactions"];
 
+function ToolTip({ x, y }: { x: SharedValue<number>; y: SharedValue<number> }) {
+  return <Circle cx={x} cy={y} r={8} color={Colors.primary} />;
+}
+
 const Page = () => {
   const headerHeight = useHeaderHeight();
   const [activeIndex, setActiveIndex] = useState(0);
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { state, isActive } = useChartPressState({ x: 0, y: { price: 0 } });
+  const font = useFont(require("@/assets/fonts/SpaceMono-Regular.ttf"), 12);
+
+  useEffect(() => {
+    console.log(isActive);
+  }, [isActive]);
 
   const { data } = useQuery({
     queryKey: ["info", id],
@@ -30,6 +44,12 @@ const Page = () => {
       const info = await fetch(`/api/info?ids=${id}`).then((res) => res.json());
       return info[id];
     },
+  });
+
+  const { data: tickers } = useQuery({
+    queryKey: ["tickers"],
+    queryFn: async (): Promise<any[]> =>
+      fetch(`/api/tickers`).then((res) => res.json()),
   });
 
   return (
@@ -140,7 +160,79 @@ const Page = () => {
         keyExtractor={(i) => i.title}
         renderItem={({ item }) => (
           <>
-            {/* <View style={{ height: 800, backgroundColor: "green" }}></View> */}
+            <View style={[defaultStyles.block, { height: 400 }]}>
+              {tickers && (
+                <>
+                  {!isActive && (
+                    <View>
+                      <Text
+                        style={{
+                          fontSize: 30,
+                          fontWeight: "bold",
+                          color: Colors.dark,
+                        }}
+                      >
+                        {tickers[tickers.length - 1].price.toFixed(2)} €
+                      </Text>
+
+                      <Text style={{ fontSize: 18, color: Colors.gray }}>
+                        Today
+                      </Text>
+                    </View>
+                  )}
+
+                  {isActive && (
+                    <View>
+                      <Text
+                        style={{
+                          fontSize: 30,
+                          fontWeight: "bold",
+                          color: Colors.dark,
+                        }}
+                      >
+                        €
+                      </Text>
+
+                      <Text style={{ fontSize: 18, color: Colors.gray }}>
+                        TEST
+                      </Text>
+                    </View>
+                  )}
+
+                  <CartesianChart
+                    chartPressState={state}
+                    axisOptions={{
+                      font,
+                      tickCount: 4,
+                      labelOffset: { x: -2, y: 0 },
+                      labelColor: Colors.gray,
+                      formatYLabel: (v) => `${v} € `,
+                      formatXLabel: (v) => format(new Date(v), "MM/yy"),
+                    }}
+                    data={tickers}
+                    xKey="timestamp"
+                    yKeys={["price"]}
+                  >
+                    {({ points }) => (
+                      <>
+                        <Line
+                          points={points.price}
+                          color={Colors.primary}
+                          strokeWidth={3}
+                        />
+
+                        {isActive && (
+                          <ToolTip
+                            x={state.x.position}
+                            y={state.y.price.position}
+                          />
+                        )}
+                      </>
+                    )}
+                  </CartesianChart>
+                </>
+              )}
+            </View>
 
             <View
               style={[defaultStyles.block, { marginTop: 20, marginBottom: 80 }]}
