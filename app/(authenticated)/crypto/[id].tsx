@@ -7,12 +7,16 @@ import {
   SectionList,
   StyleSheet,
   TouchableOpacity,
+  TextInput,
 } from "react-native";
 
 import { format } from "date-fns";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
-import { SharedValue } from "react-native-reanimated";
+import Animated, {
+  SharedValue,
+  useAnimatedProps,
+} from "react-native-reanimated";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { Circle, useFont } from "@shopify/react-native-skia";
 import { useHeaderHeight } from "@react-navigation/elements";
@@ -22,6 +26,9 @@ import Colors from "@/constants/Colors";
 import { defaultStyles } from "@/constants/Styles";
 
 const categories = ["Overview", "News", "Orders", "Transactions"];
+
+Animated.addWhitelistedNativeProps({ text: true });
+const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
 function ToolTip({ x, y }: { x: SharedValue<number>; y: SharedValue<number> }) {
   return <Circle cx={x} cy={y} r={8} color={Colors.primary} />;
@@ -50,6 +57,22 @@ const Page = () => {
     queryKey: ["tickers"],
     queryFn: async (): Promise<any[]> =>
       fetch(`/api/tickers`).then((res) => res.json()),
+  });
+
+  const animatedText = useAnimatedProps(() => {
+    return {
+      text: `${state.y.price.value.value.toFixed(2)} €`,
+      defaultValue: "",
+    };
+  });
+
+  const animatedDateText = useAnimatedProps(() => {
+    const date = new Date(state.x.value.value);
+
+    return {
+      text: `${date.toLocaleDateString()}`,
+      defaultValue: "",
+    };
   });
 
   return (
@@ -183,19 +206,23 @@ const Page = () => {
 
                   {isActive && (
                     <View>
-                      <Text
+                      <AnimatedTextInput
+                        editable={false}
+                        animatedProps={animatedText}
+                        underlineColorAndroid="transparent"
                         style={{
                           fontSize: 30,
                           fontWeight: "bold",
                           color: Colors.dark,
                         }}
-                      >
-                        €
-                      </Text>
+                      ></AnimatedTextInput>
 
-                      <Text style={{ fontSize: 18, color: Colors.gray }}>
-                        TEST
-                      </Text>
+                      <AnimatedTextInput
+                        editable={false}
+                        underlineColorAndroid="transparent"
+                        animatedProps={animatedDateText}
+                        style={{ fontSize: 18, color: Colors.gray }}
+                      ></AnimatedTextInput>
                     </View>
                   )}
 
