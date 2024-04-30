@@ -10,22 +10,22 @@ const Layout = () => {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors.primary,
-        tabBarBackground: () => (
-          <BlurView
-            intensity={100}
-            // tint="extraLight"
-            experimentalBlurMethod="dimezisBlurView"
-            style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.05)" }}
-          />
-        ),
+        // tabBarBackground: () => (
+        //   <BlurView
+        //     intensity={100}
+        //     // tint="extraLight"
+        //     experimentalBlurMethod="dimezisBlurView"
+        //     style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.05)" }}
+        //   />
+        // ),
 
-        tabBarStyle: {
-          position: "absolute",
-          backgroundColor: "transparent",
-          left: 0,
-          right: 0,
-          bottom: 0,
-        },
+        // tabBarStyle: {
+        //   position: "absolute",
+        //   backgroundColor: "transparent",
+        //   left: 0,
+        //   right: 0,
+        //   bottom: 0,
+        // },
       }}
     >
       <Tabs.Screen
@@ -35,8 +35,8 @@ const Layout = () => {
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="registered" size={size} color={color} />
           ),
-          header: () => <CustomHeader />,
-          headerTransparent: true,
+          // header: () => <CustomHeader />,
+          // headerTransparent: true,
         }}
       />
 

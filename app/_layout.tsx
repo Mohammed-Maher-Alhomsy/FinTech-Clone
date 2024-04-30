@@ -13,6 +13,7 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 const queryClient = new QueryClient();
 
 import Colors from "@/constants/Colors";
+import { UserInactivityProvider } from "@/context/UserInactivity";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -187,6 +188,11 @@ const InitialLayout = () => {
           ),
         }}
       />
+
+      <Stack.Screen
+        name="(authenticated)/(modals)/lock"
+        options={{ headerShown: false, animation: "none" }}
+      />
     </Stack>
   );
 };
@@ -198,9 +204,11 @@ function RootLayoutNav() {
     //   publishableKey={clerkPublishableKey!}
     // >
     <QueryClientProvider client={queryClient}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <InitialLayout />
-      </GestureHandlerRootView>
+      <UserInactivityProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <InitialLayout />
+        </GestureHandlerRootView>
+      </UserInactivityProvider>
     </QueryClientProvider>
 
     // </ClerkProvider>
