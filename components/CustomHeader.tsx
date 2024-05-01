@@ -11,6 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import Colors from "@/constants/Colors";
+import { Link } from "expo-router";
 
 const CustomHeader = () => {
   const { top } = useSafeAreaInsets();
@@ -23,11 +24,13 @@ const CustomHeader = () => {
       style={{ paddingTop: top, flex: 1, backgroundColor: "rgba(0,0,0,0.05)" }}
     >
       <View style={styles.container}>
-        <TouchableOpacity style={styles.roundBtn}>
-          <Text style={{ color: "white", fontWeight: "500", fontSize: 16 }}>
-            M
-          </Text>
-        </TouchableOpacity>
+        <Link href="/(authenticated)/(modals)/account" asChild>
+          <TouchableOpacity style={styles.roundBtn}>
+            <Text style={{ color: "white", fontWeight: "500", fontSize: 16 }}>
+              M
+            </Text>
+          </TouchableOpacity>
+        </Link>
 
         <View style={styles.searchSection}>
           <Ionicons

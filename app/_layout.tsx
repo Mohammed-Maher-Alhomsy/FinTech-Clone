@@ -1,5 +1,10 @@
 import { useEffect } from "react";
-import { ActivityIndicator, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Touchable,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import { useFonts } from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
@@ -199,6 +204,22 @@ const InitialLayout = () => {
           animation: "none",
           headerShown: false,
           statusBarStyle: "dark",
+        }}
+      />
+
+      <Stack.Screen
+        name="(authenticated)/(modals)/account"
+        options={{
+          title: "",
+          animation: "fade",
+          presentation: "transparentModal",
+          headerTransparent: true,
+
+          headerLeft: () => (
+            <TouchableOpacity onPress={router.back}>
+              <Ionicons name="close-outline" size={34} color="#fff" />
+            </TouchableOpacity>
+          ),
         }}
       />
     </Stack>
